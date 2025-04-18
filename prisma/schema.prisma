@@ -1,0 +1,64 @@
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id_category Int        @id @default(autoincrement())
+  name        String     @db.VarChar(100)
+  description String     @db.Text
+  status      Boolean    @default(true)
+  movments    movments[]
+}
+
+model movments {
+  id_movment  Int        @id @default(autoincrement())
+  created_at  DateTime   @default(now())
+  status      Boolean    @default(true)
+  description String     @db.Text
+  total       Decimal    @db.Decimal(10, 2)
+  user_id     Int
+  category_id Int
+  categories  categories @relation(fields: [category_id], references: [id_category])
+  users       users      @relation(fields: [user_id], references: [id_user])
+
+  @@index([category_id], map: "movments_category_id_fkey")
+  @@index([user_id], map: "movments_user_id_fkey")
+}
+
+model refresh_token {
+  id         String   @id
+  id_user    Int
+  expires_at DateTime
+  created_at DateTime @default(now())
+  is_revoked Boolean  @default(false)
+  token      String   @db.VarChar(255)
+  users      users    @relation(fields: [id_user], references: [id_user], onDelete: Cascade)
+
+  @@index([id_user], map: "refresh_token_id_user_fkey")
+}
+
+model users {
+  id_user       Int             @id @default(autoincrement())
+  name          String          @db.VarChar(100)
+  email         String          @unique(map: "Users_email_key") @db.VarChar(50)
+  is_active     Boolean         @default(true)
+  password      String          @db.VarChar(255)
+  role          users_role      @default(USER)
+  movments      movments[]
+  refresh_token refresh_token[]
+}
+
+enum users_role {
+  ADMIN
+  SUBSCRIBER
+  USER
+  GUEST
+  MODERATOR
+}
