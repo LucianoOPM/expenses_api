@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMovementDto } from './dto/create-movement.dto';
 import { UpdateMovementDto } from './dto/update-movement.dto';
-import { type PrismaService } from '@/prisma.service';
 
 @Injectable()
 export class MovementsService {
-  constructor(protected readonly prismaService: PrismaService) {}
   create(createMovementDto: CreateMovementDto) {
     return 'This action adds a new movement';
   }
 
   findAll() {
-    this.prismaService.movments.findMany();
+    return 'This action returns all movements';
   }
 
   findOne(id: number) {

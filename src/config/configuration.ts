@@ -1,4 +1,4 @@
-const { PORT } = process.env;
 export default () => ({
-  port: PORT || 8080,
-});
+  port: process.env.PORT || 8080,
+  databaseUrl: process.env.DATABASE_URL,
+})
