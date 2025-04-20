@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '@/app.controller';
-import { AppService } from '@/app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MovementsModule } from '@/movements/movements.module';
 import { DrizzleModule } from '@/drizzle/drizzle.module';
 import { SessionModule } from '@/session/session.module';
+import { UsersModule } from '@/users/users.module';
 import configuration from '@/config/configuration';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({load: [configuration], isGlobal: true}), 
-    MovementsModule, 
-    SessionModule, 
-    DrizzleModule
+    ConfigModule.forRoot({ load: [configuration], isGlobal: true }),
+    MovementsModule,
+    SessionModule,
+    UsersModule,
+    DrizzleModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
